@@ -24,7 +24,6 @@ def main():
 def ConsultarTodos():
     return{"Usiarios Registrados": usuarios}
 
-
 #endopoint para agregar usuarios
 @app.post('/usuarios/',tags=['Operaciones CRUD'])
 def AgregarUsuario(usuarionuevo:dict):
@@ -34,7 +33,7 @@ def AgregarUsuario(usuarionuevo:dict):
 
     usuarios.append(usuarionuevo)
     return usuarionuevo
-
+#Creee este coso para poder decir que hcie cambios
 #endpoint actualizar
 @app.put('/usuarios/', tags=['Operaciones CRUD'])
 def actualizar(id: int, usuarioActualizado: dict):
@@ -44,7 +43,7 @@ def actualizar(id: int, usuarioActualizado: dict):
             return usuarios[index]
     raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-
+#Creee este coso para poder decir que hcie cambios x300 
 #endpoint eliminar
 @app.delete('/usuarios/', tags=['Operaciones CRUD'])
 def eliminar_usuario(id: int):
