@@ -37,3 +37,12 @@ def main():
 def consultar_todas():
     return {'Tareas Registradas': tareas}
 
+# Agregar tarea
+@app.post('/tareas/', tags=['Operaciones CRUD'])
+def agregar_tarea(tarea_nueva: Tarea):
+    for tarea in tareas:
+        if tarea["id"] == tarea_nueva.id:
+            raise HTTPException(status_code=400, detail="La tarea ya existe")
+    
+    tareas.append(tarea_nueva.dict())
+    return tarea_nueva
