@@ -46,3 +46,13 @@ def agregar_tarea(tarea_nueva: Tarea):
     
     tareas.append(tarea_nueva.dict())
     return tarea_nueva
+
+# Actualizar tarea
+@app.put('/tareas/', tags=['Operaciones CRUD'])
+def actualizar_tarea(id: int, tarea_actualizada: Tarea):
+    for index, tarea in enumerate(tareas):
+        if tarea["id"] == id:
+            tareas[index] = tarea_actualizada.dict()
+            return tareas[index]
+    raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
