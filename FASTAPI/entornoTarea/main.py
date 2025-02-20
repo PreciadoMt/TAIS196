@@ -1,0 +1,39 @@
+from fastapi import FastAPI, HTTPException
+from typing import Optional, List
+from pydantic import BaseModel
+from datetime import date
+
+app = FastAPI(
+    title='Gestor de Tareas',
+    description='API para gestionar una lista de tareas',
+    version='1.0.0'
+)
+
+# Modelo de datos para las tareas
+class Tarea(BaseModel):
+    id: int
+    titulo: str
+    descripcion: Optional[str] = None
+    vencimiento: str
+    estado: str
+
+# BD FAKE 
+tareas: List[Tarea] = [
+    {
+        "id": 1,
+        "titulo": "Estudiar para el examen",
+        "descripcion": "Repasar los apuntes de TAI",
+        "vencimiento": "14-02-24",
+        "estado": "completada"
+    }
+]
+
+@app.get('/', tags=['Inicio'])
+def main():
+    return {'mensaje': 'Bienvenido a la API de Gestión de Tareas'}
+
+# Consultar tareas
+@app.get('/tareas', tags=['Operaciones CRUD'])
+def consultar_todas():
+    return {'Tareas Registradas': tareas}
+
