@@ -33,12 +33,12 @@ def main():
     return {'mensaje': 'Bienvenido a la API de Gestión de Tareas'}
 
 # Consultar tareas
-@app.get('/tareas', tags=['Operaciones CRUD'])
+@app.get('/Cons_tareas', tags=['Operaciones CRUD'])
 def consultar_todas():
     return {'Tareas Registradas': tareas}
 
 # Agregar tarea
-@app.post('/tareas/', tags=['Operaciones CRUD'])
+@app.post('/ADD_tareas/', tags=['Operaciones CRUD'])
 def agregar_tarea(tarea_nueva: Tarea):
     for tarea in tareas:
         if tarea["id"] == tarea_nueva.id:
@@ -48,7 +48,7 @@ def agregar_tarea(tarea_nueva: Tarea):
     return tarea_nueva
 
 # Actualizar tarea
-@app.put('/tareas/', tags=['Operaciones CRUD'])
+@app.put('/Act_tareas/', tags=['Operaciones CRUD'])
 def actualizar_tarea(id: int, tarea_actualizada: Tarea):
     for index, tarea in enumerate(tareas):
         if tarea["id"] == id:
@@ -57,10 +57,11 @@ def actualizar_tarea(id: int, tarea_actualizada: Tarea):
     raise HTTPException(status_code=404, detail="Tarea no encontrada")
 
 # Eliminar una tarea
-@app.delete('/tareas/', tags=['Operaciones CRUD'])
+@app.delete('/Eli_tareas/', tags=['Operaciones CRUD'])
 def eliminar_tarea(id: int):
     for index, tarea in enumerate(tareas):
         if tarea["id"] == id:
             del tareas[index]
             return {"mensaje": "Tarea eliminada con éxito"}
     raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
