@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.responses import JSONResponse
 from typing import Optional, List
 from modelsPydantic import modelUsuario, modelauth
 from tokenGen import createToken
-from fastapi.responses import JSONResponse
+from middlewares import BearerJWT
 
 
 
@@ -30,7 +31,7 @@ def login(autorizado:modelauth):
     if autorizado.corre == 'ivan@example.com' and autorizado.passw == '123456789':
         token: str = createToken(autorizado.model_dump())
         print(token)
-        return {"aviso":"Token generado"}
+        return JSONResponse(content=token)
     else:
         return{"aviso":"usuario no autorizado"}
 
@@ -38,7 +39,7 @@ def login(autorizado:modelauth):
 
 
 #endponit consultar all
-@app.get('/usuarios', response_model= List[modelUsuario], tags=['Operaciones CRUD'])
+@app.get('/usuarios', dependencies=[Depends(BearerJWT())] ,response_model= List[modelUsuario], tags=['Operaciones CRUD'])
 def ConsultarTodos():
     return usuarios
 

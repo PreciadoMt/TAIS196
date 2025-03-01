@@ -11,3 +11,4 @@ class modelUsuario(BaseModel):
 class modelauth(BaseModel):
     corre:EmailStr
     passw:str = Field(..., min_length=8, strip_whitespace=True, description="contraseña minimo 8 caracteres")
+
