@@ -4,7 +4,8 @@ from typing import Optional, List
 from modelsPydantic import modelUsuario, modelauth
 from tokenGen import createToken
 from middlewares import BearerJWT
-
+from DB.conexion import Session, engine, Base
+from models.modelsDB import User
 
 
 app = FastAPI(
@@ -12,6 +13,8 @@ app = FastAPI(
     description='Preciado Martinez Uriel Ivan',
     version='1.0.1'
 )
+#levanta las tablas definids en los modelos
+Base.metadata.create_all(bind=engine)
 
 
 usuarios = [
@@ -46,11 +49,17 @@ def ConsultarTodos():
 #endopoint para agregar usuarios
 @app.post('/usuarios/', response_model= modelUsuario, tags=['Operaciones CRUD'])
 def AgregarUsuario(usuarionuevo: modelUsuario):
-    for usr in usuarios:
-        if usr["id"] == usuarionuevo.id:
-            raise HTTPException(status_code= 400, details="El usuario ya existe")
-    usuarios.append(usuarionuevo)
-    return usuarionuevo
+    db=Session()
+    try:
+        db.add(User(**usuarionuevo.model_dump()))
+        db.commit()
+        return JSONResponse(status_code=201, content={"mensaje":"Usario Guardado","usuario":usuarionuevo.model_dump() })
+    except Exception as e:
+        db.rollback()
+        return JSONResponse(status_code=500, content={"mensaje":" No se guardo nadota","Excepcion":str(e) })
+
+    finally:
+        db.close()
 
 #endpoint actualizar
 @app.put('/usuarios/', response_model= modelUsuario, tags=['Operaciones CRUD'])
