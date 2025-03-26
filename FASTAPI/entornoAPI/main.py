@@ -23,7 +23,7 @@ usuarios = [
     {"id":3, "nombre":"Uriel","edad":21, "correo":"correo@correo.com"},
     {"id":4, "nombre":"Ivan","edad":21, "correo":"correo@correo.com"}
 ]
-   
+
 @app.get('/', tags=['Inicio'])
 def main():
     return {'hola FastApi''Preciado'}
